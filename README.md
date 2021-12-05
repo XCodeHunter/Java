@@ -3,12 +3,14 @@ Repository for beginners who want to know more about the java language  The aim 
 
 To start we need to configure the environment:
 
+##PASSO A PASSO INSTALAÇÃO JDK
 First step: install java jdk
 
 link to download jdk (this is the developer kit it has the jvm code interpreter): https://www.oracle.com/br/java/technologies/javase/jdk11-archive-downloads.html
 
 After downloading, run the executable and always press next
 
+##PASSO A PASSO PARA VARIAVEL DE AMBIENTE
 Once installed, you will need to change your computer's environment variable by following this step by step
 
  1 - Look in the explorer for "environment variables";
@@ -21,11 +23,13 @@ Once installed, you will need to change your computer's environment variable by 
  
  5 - After that open the terminal and enter the command "java -version" to make sure that java is installed on your computer.
 
+##PASSO A PASSO PARA INSTALAÇÃO DE IDE
 The next step is to install an ide of your choice.
 
 Next I'll leave the link of the ide that I prefer is the VS CODE
 and then the ECLIPSE
 
 VS CODE: https://code.visualstudio.com/download
+
 ECLIPSE: https://www.eclipse.org/downloads/
 
