@@ -7,9 +7,5 @@ public class ConversaodeVarialvel {
         //Realizando o casting 
         int valor = (int) salario;
         System.out.println(valor);
-
-
-    
-
     }   
 }
