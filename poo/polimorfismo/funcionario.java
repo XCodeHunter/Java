@@ -1,6 +1,6 @@
-package newBank;
+package poo.polimorfismo;
 
-public class funcionario {
+public abstract class funcionario {
     private String nome;
     private String cpf;
     private double salario;
@@ -10,11 +10,9 @@ public class funcionario {
         this.cpf = cpf;
         this.salario = salario;
     }
-
-    public double getBonificacao(){
-        return this.salario * 0.1;
-    }
     
+    public abstract double getBonificacao();
+
     public String getNome() {
         return nome;
     }
@@ -33,6 +31,4 @@ public class funcionario {
     public void setSalario(double salario) {
         this.salario = salario;
     }
-    
-    
 }
