@@ -1,5 +1,7 @@
 package poo.cascoBank;
 
+import java.util.ArrayList;
+
 public class account {
     
     private int numeroConta;
@@ -7,6 +9,15 @@ public class account {
     private double saldoConta;
     private client titular;
     private static int total;
+    ArrayList<client> clien = new ArrayList<>();
+
+    public ArrayList<client> getClien() {
+        return clien;
+    }
+
+    public void setClien(ArrayList<client> clien) {
+        this.clien = clien;
+    }
 
     public account(int conta, int agencia, client titular){
             total++;
