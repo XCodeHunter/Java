@@ -16,7 +16,7 @@ public class ExecuteCrudConnection {
         Statement state = con.createStatement();
 
         //Inserindo um dado
-        state.execute("INSERT INTO PRODUTO (nome,descricao) VALUES ('Celular','Iphone 12')");
+        //state.execute("INSERT INTO PRODUTO (nome,descricao) VALUES ('Celular','Iphone 12')");
 
         //Listando o que está salvo
         state.execute("SELECT ID,NOME,DESCRICAO FROM PRODUTO");
@@ -36,7 +36,7 @@ public class ExecuteCrudConnection {
         }
 
         //Deletando um dado
-        state.execute("DELETE FROM PRODUTO WHERE ID = 3", Statement.SUCCESS_NO_INFO);
+        //state.execute("DELETE FROM PRODUTO WHERE ID = 3", Statement.SUCCESS_NO_INFO);
         con.close();
     }
 }
