@@ -1,11 +1,15 @@
 package simpleprograms;
 
 public class concatenação {
-  public static void main(String[] args) {
-    String saudacao = "Olá, meu nome é ";
-    String nome = "Rômulo ";
-    String continuacao = "e minha idade é ";
-    int idade = 100;
-    System.out.println(saudacao+nome+continuacao+idade);
-  }  
+  String s1 = "Hello";
+
+  String s2="EISA";
+
+  String s3=s1+s2;
+  
+  String s4=s1.concat(s2);
+
+  System.out.println(s3==s4);
+
+  System.out.println(s3.equals(s4));
 }
