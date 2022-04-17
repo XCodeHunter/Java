@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.json.JSONObject;
+
 import br.com.jpa.dao.CategoriaDao;
 import br.com.jpa.dao.ProdutoDao;
 import br.com.jpa.model.Categoria;
@@ -29,7 +31,16 @@ public class Test {
 			System.out.println(a);
 		}
 		);
-
+		
+		List<Produto> listParametro = p.buscarPorParametros("", new BigDecimal(12), null);
+		listParametro.forEach(parametros -> {
+			JSONObject json = new JSONObject();
+			json.put("Nome", parametros.getNome());
+			json.put("Descricao", parametros.getDescricao());
+			json.put("Preco", parametros.getPreco());
+			json.put("Categoria", parametros.getCategoria().getNome());
+			System.out.println(json);
+		} );
 	}
 	
 	public static void cadastrarProduto() {
@@ -39,7 +50,7 @@ public class Test {
 		
 		Produto produto = new Produto();
 		produto.setDescricao("a");
-		produto.setNome("Santander");
+		produto.setNome("a");
 		produto.setPreco(new BigDecimal(12.00));
 		produto.setCategoria(categoria);
 
