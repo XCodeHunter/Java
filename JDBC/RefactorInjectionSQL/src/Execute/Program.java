@@ -2,17 +2,14 @@ package Execute;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import org.json.JSONObject;
 
-import com.mysql.cj.xdevapi.JsonArray;
-
+import Connection.ConnectionFactory;
 import DAO.ProdutoDao;
 import Model.ProdutoModel;
-import NewProgram.ConnectionFactory;
 
 public class Program {
 	

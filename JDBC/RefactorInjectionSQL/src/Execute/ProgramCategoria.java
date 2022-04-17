@@ -5,12 +5,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
+import Connection.ConnectionFactory;
 import DAO.CategoriaDAO;
 import Model.CategoriaModel;
-import NewProgram.ConnectionFactory;
 
 public class ProgramCategoria {
 	public static void main(String[] args) throws SQLException {
