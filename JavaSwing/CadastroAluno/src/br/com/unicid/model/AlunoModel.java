@@ -1,19 +1,22 @@
 package br.com.unicid.model;
 
-import java.util.Date;
-
-
 public class AlunoModel {
 
-	private Integer RGM;
+	private Integer idAluno;
 	private String nome;
-	private Date dataNascimento;
-	private Long cpf;
+	private Integer rgm;
+	private String dataNascimento;
+	private String cpf;
 	private String email;
-	private Long celular;
+	private String celular;
+	private String cep;
+	private String logradouro;
+	private String municipio;
+	private String estado;
+	private CursoModel curso;
 	
-	public AlunoModel(int RGM, String nome, Date dataNascimento, long cpf, String email, long celular) {
-		this.RGM =  RGM;
+	public AlunoModel(int RGM, String nome, String dataNascimento, String cpf, String email, String celular) {
+		this.rgm =  RGM;
 		this.nome = nome;
 		this.dataNascimento = dataNascimento;
 		this.cpf = cpf;
@@ -21,28 +24,26 @@ public class AlunoModel {
 		this.celular = celular;
 	}
 	
-	public Integer getRGM() {
-		return RGM;
+	public AlunoModel() {
+		
 	}
-	public void setRGM(Integer rGM) {
-		RGM = rGM;
-	}
+	
 	public String getNome() {
 		return nome;
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public Date getDataNascimento() {
+	public String getDataNascimento() {
 		return dataNascimento;
 	}
-	public void setDataNascimento(Date dataNascimento) {
+	public void setDataNascimento(String dataNascimento) {
 		this.dataNascimento = dataNascimento;
 	}
-	public Long getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
-	public void setCpf(Long cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 	public String getEmail() {
@@ -51,11 +52,66 @@ public class AlunoModel {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Long getCelular() {
+	public String getCelular() {
 		return celular;
 	}
-	public void setCelular(Long celular) {
+	public void setCelular(String celular) {
 		this.celular = celular;
 	}
-	
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getMunicipio() {
+		return municipio;
+	}
+
+	public void setMunicipio(String municipio) {
+		this.municipio = municipio;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public Integer getIdAluno() {
+		return idAluno;
+	}
+
+	public void setIdAluno(Integer idAluno) {
+		this.idAluno = idAluno;
+	}
+
+	public Integer getRgm() {
+		return rgm;
+	}
+
+	public void setRgm(Integer rgm) {
+		this.rgm = rgm;
+	}
+
+	public CursoModel getCurso() {
+		return curso;
+	}
+
+	public void setCurso(CursoModel curso) {
+		this.curso = curso;
+	}
 }

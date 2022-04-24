@@ -1,7 +1,6 @@
 package br.com.unicid.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,15 +27,26 @@ public class AlunoDao {
 	public List<AlunoModel> listar(){
 		try {
 			List<AlunoModel> alunoList = new ArrayList<>();
-			String sql = "";
+			String sql = "SELECT a from aluno a";
 			
 			try (PreparedStatement pstm = connection.prepareStatement(sql)) {
 				pstm.execute();
 				
 				try (ResultSet rst = pstm.getResultSet()) {
 					while (rst.next()) {
-						AlunoModel aluno = new AlunoModel(rst.getInt(1), rst.getString(2), rst.getDate(3), 
-								rst.getLong(4), rst.getString(5), rst.getLong(6));
+						AlunoModel aluno = new AlunoModel();
+						aluno.setIdAluno(rst.getInt(1));
+						aluno.setNome(rst.getString(2));
+						aluno.setRgm(rst.getInt(3));
+						aluno.setDataNascimento(rst.getString(4));
+						aluno.setCpf(rst.getString(5));
+						aluno.setEmail(rst.getString(6));
+						aluno.setCelular(rst.getString(7));
+						aluno.setCep(rst.getString(8));
+						aluno.setCelular(rst.getString(9));
+						aluno.setLogradouro(rst.getString(10));
+						aluno.setMunicipio(rst.getString(11));
+						aluno.setEstado(rst.getString(12));
 						
 						alunoList.add(aluno);
 					}
@@ -52,20 +62,27 @@ public class AlunoDao {
 
 	public void salvar(AlunoModel aluno)  {	
 		try {
-			String sql = "";
+			String sql = "INSERT INTO aluno(nome, rgm, dataNascimento, cpf, email, celular, cep, logradouro, municipio, estado, idCurso) "
+					+ "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 			try (PreparedStatement pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 				
 				pstm.setString(1, aluno.getNome());
-				pstm.setString(2, aluno.getEmail());
-				pstm.setLong(4, aluno.getCelular());
-				pstm.setLong(5, aluno.getCpf());
-				pstm.setDate(6, (Date) aluno.getDataNascimento());
+				pstm.setInt(2, aluno.getRgm());
+				pstm.setString(3, aluno.getDataNascimento());
+				pstm.setString(4, aluno.getCpf());
+				pstm.setString(5, aluno.getEmail());
+				pstm.setString(6, aluno.getCelular());
+				pstm.setString(7, aluno.getCep());
+				pstm.setString(8, aluno.getLogradouro());
+				pstm.setString(9, aluno.getMunicipio());
+				pstm.setString(10, aluno.getEstado());
+				pstm.setInt(11, aluno.getCurso().getIdCurso());
 				
 				pstm.execute();
 				
 				try (ResultSet rst = pstm.getGeneratedKeys()) {
 					while (rst.next()) {
-						aluno.setRGM(rst.getInt(1));
+						aluno.setIdAluno(rst.getInt(1));
 					}
 				}
 			}
