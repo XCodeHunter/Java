@@ -13,11 +13,11 @@ import br.com.unicid.model.CampusModel;
 import br.com.unicid.model.CursoModel;
 import br.com.unicid.util.ConnectionFactory;
 
-public class CursoDao {
+public class CampusDao {
 
 	private Connection connection;
 
-	public CursoDao() {
+	public CampusDao() {
 		try {
 			connection = new ConnectionFactory().estabeleceConexao();
 			
@@ -26,28 +26,26 @@ public class CursoDao {
 		
 	}
 
-	public List<CursoModel> listarCurso(){
+	public List<CampusModel> listarCurso(){
 		try {
-			List<CursoModel> cursoList = new ArrayList<>();
-			String sql = "SELECT * from curso c";
+			List<CampusModel> campusList = new ArrayList<>();
+			String sql = "SELECT * from campus c";
 			
 			try (PreparedStatement pstm = connection.prepareStatement(sql)) {
 				pstm.execute();
 				
 				try (ResultSet rst = pstm.getResultSet()) {
 					while (rst.next()) {
-						CursoModel curso = new CursoModel();
+						CampusModel campus = new CampusModel();
 						
-						curso.setCampus(new CampusModel());
-						curso.setIdCurso(rst.getInt(1));
-						curso.setCurso(rst.getString(2));
-						curso.setPeriodo(rst.getString(3));
-						curso.getCampus().setIdCampus(rst.getInt(4));
-						cursoList.add(curso);
+						campus.setIdCampus(rst.getInt(1));
+						campus.setNomeCampus(rst.getString(2));
+						
+						campusList.add(campus);
 					}
 				}
 			}
-			return cursoList;
+			return campusList;
 			
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
@@ -55,21 +53,20 @@ public class CursoDao {
 		
 	}
 
-	public void salvar(CursoModel curso)  {	
+	public void salvar(CampusModel campus)  {	
 		try {
-			String sql = "INSERT INTO curso(curso, periodo, idCampus) values (?, ?, ?)";
+			String sql = "INSERT INTO campus(nomeCampus) values (?)";
 			
 			try (PreparedStatement pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 				
-				pstm.setString(1, curso.getCurso());
-				pstm.setString(2, curso.getPeriodo());
-				pstm.setInt(3, curso.getCampus().getIdCampus());
+				pstm.setString(1, campus.getNomeCampus());
+
 				
 				pstm.execute();
 				
 				try (ResultSet rst = pstm.getGeneratedKeys()) {
 					while (rst.next()) {
-						curso.setIdCurso(rst.getInt(1));
+						campus.setIdCampus(rst.getInt(1));
 					}
 				}
 			}

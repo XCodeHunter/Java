@@ -6,10 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.text.ParseException;
 
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -32,12 +31,13 @@ import javax.swing.event.CaretListener;
 import javax.swing.text.MaskFormatter;
 
 import br.com.unicid.dao.AlunoDao;
+import br.com.unicid.dao.CampusDao;
 import br.com.unicid.dao.CursoDao;
 import br.com.unicid.integration.ViaCepIntegration;
 import br.com.unicid.model.AlunoModel;
+import br.com.unicid.model.CampusModel;
 import br.com.unicid.model.CursoModel;
 import br.com.unicid.model.EnderecoModel;
-import javax.swing.ButtonGroup;
 
 public class Tela extends JFrame {
 
@@ -75,7 +75,9 @@ public class Tela extends JFrame {
 	 * 
 	 * @throws ParseException
 	 */
+	@SuppressWarnings("rawtypes")
 	public Tela() throws ParseException {
+		CampusDao campus = new CampusDao();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 612, 380);
 
@@ -261,9 +263,25 @@ public class Tela extends JFrame {
 		lblCurso.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblCurso.setBounds(17, 21, 45, 22);
 		panel_1.add(lblCurso);
+		
+		JComboBox cbxCampus = new JComboBox();
+		extracted(cbxCampus);
+		cbxCampus.setBounds(90, 68, 439, 31);
+		panel_1.add(cbxCampus);
 
 		JComboBox cbxCurso = new JComboBox();
-		cbxCurso.setModel(new DefaultComboBoxModel(new String[] {"Selecione uma op\u00E7\u00E3o"}));
+		cbxCurso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CursoModel curso = (CursoModel) cbxCurso.getSelectedItem();
+				cbxCampus.removeAllItems();
+				extracted(cbxCampus);
+				campus.listarCurso().stream().forEach((cam) -> {
+				if(curso.getCampus().getIdCampus() == cam.getIdCampus())
+						cbxCampus.addItem(cam); 
+				});
+			}
+		});
+		extracted(cbxCurso);
 		cbxCurso.setBounds(70, 14, 439, 31);
 		panel_1.add(cbxCurso);
 
@@ -272,10 +290,6 @@ public class Tela extends JFrame {
 		lblC.setBounds(17, 69, 63, 22);
 		panel_1.add(lblC);
 
-		JComboBox cbxCampus = new JComboBox();
-		cbxCampus.setModel(new DefaultComboBoxModel(new String[] {"Selecione uma op\u00E7\u00E3o"}));
-		cbxCampus.setBounds(90, 68, 439, 31);
-		panel_1.add(cbxCampus);
 
 		JLabel lblPeriodo = new JLabel("Periodo");
 		lblPeriodo.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -320,9 +334,20 @@ public class Tela extends JFrame {
 					
 					CursoModel curso = (CursoModel) cbxCurso.getSelectedItem();
 					curso.setIdCurso(curso.getIdCurso());
-					curso.setCampus(curso.getCampus());
+					
+					CampusModel campuscbx = (CampusModel) cbxCampus.getSelectedItem();
+					curso.setCampus(campuscbx);
 					curso.setCurso(curso.getCurso());
-					curso.setPeriodo(curso.getPeriodo());
+					
+					
+					if (rdbtnNewRadioButton.isSelected()) {
+						curso.setPeriodo(rdbtnNewRadioButton.getText());
+					} else if (rdbtnNoturno.isSelected()) {
+						curso.setPeriodo(rdbtnNoturno.getText());
+					}else {
+						curso.setPeriodo(rdbtnVespertino.getText());
+					}
+					
 					
 					aluno.setCurso(curso);
 					
@@ -369,9 +394,9 @@ public class Tela extends JFrame {
 		dao.listarCurso().stream().forEach((c) -> {
 			cbxCurso.addItem(c);
 		});
-		
-		dao.listarCurso().stream().forEach((c) -> {
-			cbxCampus.addItem(c.getCampus());
-		});
+	}
+
+	private void extracted(JComboBox cbxCurso) {
+		cbxCurso.setModel(new DefaultComboBoxModel(new String[] {"Selecione uma op\u00E7\u00E3o"}));
 	}
 }

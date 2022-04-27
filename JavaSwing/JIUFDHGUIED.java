@@ -78,13 +78,6 @@ public class JIUFDHGUIED extends JFrame {
 			}
 		});
 
-		// textField.addKeyListener(new KeyAdapter() {
-		// @Override
-		// public void keyPressed(KeyEvent arg0) {
-		// if(arg0.getKeyCode() == 10)
-		// System.out.println(textField.getText());
-		// }
-		// });
 		textField.setBounds(21, 44, 86, 20);
 		contentPane.add(textField);
 		textField.setColumns(10);
@@ -115,7 +108,7 @@ public class JIUFDHGUIED extends JFrame {
 				throw new RuntimeException("HTTP error code : " + conexao.getResponseCode());
 
 			BufferedReader resposta = new BufferedReader(new InputStreamReader((conexao.getInputStream())));
-			String jsonEmString = converteJsonEmString(resposta);
+			String jsonEmString = converteJsonEmString(resposta, "UTF-8");
 
 			Gson gson = new Gson();
 			Endereco endereco = gson.fromJson(jsonEmString, Endereco.class);
