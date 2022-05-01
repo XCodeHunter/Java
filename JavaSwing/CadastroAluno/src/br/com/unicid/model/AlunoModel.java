@@ -13,16 +13,8 @@ public class AlunoModel {
 	private String logradouro;
 	private String municipio;
 	private String estado;
+	private String periodo;
 	private CursoModel curso;
-	
-	public AlunoModel(int RGM, String nome, String dataNascimento, String cpf, String email, String celular) {
-		this.rgm =  RGM;
-		this.nome = nome;
-		this.dataNascimento = dataNascimento;
-		this.cpf = cpf;
-		this.email = email;
-		this.celular = celular;
-	}
 	
 	public AlunoModel() {
 		
@@ -113,5 +105,13 @@ public class AlunoModel {
 
 	public void setCurso(CursoModel curso) {
 		this.curso = curso;
+	}
+
+	public String getPeriodo() {
+		return periodo;
+	}
+
+	public void setPeriodo(String periodo) {
+		this.periodo = periodo;
 	}
 }

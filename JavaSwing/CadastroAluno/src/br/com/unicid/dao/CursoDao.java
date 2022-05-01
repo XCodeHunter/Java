@@ -41,8 +41,7 @@ public class CursoDao {
 						curso.setCampus(new CampusModel());
 						curso.setIdCurso(rst.getInt(1));
 						curso.setCurso(rst.getString(2));
-						curso.setPeriodo(rst.getString(3));
-						curso.getCampus().setIdCampus(rst.getInt(4));
+						curso.getCampus().setIdCampus(rst.getInt(3));
 						cursoList.add(curso);
 					}
 				}
@@ -55,27 +54,4 @@ public class CursoDao {
 		
 	}
 
-	public void salvar(CursoModel curso)  {	
-		try {
-			String sql = "INSERT INTO curso(curso, periodo, idCampus) values (?, ?, ?)";
-			
-			try (PreparedStatement pstm = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-				
-				pstm.setString(1, curso.getCurso());
-				pstm.setString(2, curso.getPeriodo());
-				pstm.setInt(3, curso.getCampus().getIdCampus());
-				
-				pstm.execute();
-				
-				try (ResultSet rst = pstm.getGeneratedKeys()) {
-					while (rst.next()) {
-						curso.setIdCurso(rst.getInt(1));
-					}
-				}
-			}
-			
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
 }

@@ -4,7 +4,6 @@ public class CursoModel {
 	
 	private Integer idCurso;
 	private String curso;
-	private String periodo;
 	private CampusModel campus;
 	
 	
@@ -36,20 +35,6 @@ public class CursoModel {
 	public void setCurso(String curso) {
 		this.curso = curso;
 	}
-
-
-
-	public String getPeriodo() {
-		return periodo;
-	}
-
-
-
-	public void setPeriodo(String periodo) {
-		this.periodo = periodo;
-	}
-
-
 
 	public CampusModel getCampus() {
 		return campus;

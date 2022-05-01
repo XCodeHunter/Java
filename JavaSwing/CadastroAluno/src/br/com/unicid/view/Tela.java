@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
@@ -31,13 +32,19 @@ import javax.swing.event.CaretListener;
 import javax.swing.text.MaskFormatter;
 
 import br.com.unicid.dao.AlunoDao;
+import br.com.unicid.dao.BoletimDao;
 import br.com.unicid.dao.CampusDao;
 import br.com.unicid.dao.CursoDao;
+import br.com.unicid.dao.CursoXMateriaDao;
 import br.com.unicid.integration.ViaCepIntegration;
 import br.com.unicid.model.AlunoModel;
+import br.com.unicid.model.BoletimModel;
 import br.com.unicid.model.CampusModel;
 import br.com.unicid.model.CursoModel;
+import br.com.unicid.model.CursoXMateriaModel;
 import br.com.unicid.model.EnderecoModel;
+import br.com.unicid.model.MateriaModel;
+import br.com.unicid.model.SemestreModel;
 
 public class Tela extends JFrame {
 
@@ -52,7 +59,12 @@ public class Tela extends JFrame {
 	private ViaCepIntegration via = new ViaCepIntegration();
 	private JTextField txtCep;
 	private AlunoDao alunoDao;
-	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private BoletimDao boletimDao;
+	final ButtonGroup buttonGroup = new ButtonGroup();
+	private JTextField txtRgmNotas;
+	private JTextField txtNomeNotas;
+	private JTextField txtCursoNotas;
+	private JTextField txtFaltas;
 
 	/**
 	 * Launch the application.
@@ -78,6 +90,8 @@ public class Tela extends JFrame {
 	@SuppressWarnings("rawtypes")
 	public Tela() throws ParseException {
 		CampusDao campus = new CampusDao();
+		CursoDao dao = new CursoDao();
+		CursoXMateriaDao cursoxMateriaDao = new CursoXMateriaDao();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 612, 380);
 
@@ -137,101 +151,102 @@ public class Tela extends JFrame {
 		tabbedPane.setBounds(10, 43, 576, 265);
 		contentPane.add(tabbedPane);
 
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("Dados pessoais", null, panel, null);
-		panel.setLayout(null);
+		JPanel panelDados = new JPanel();
+		tabbedPane.addTab("Dados pessoais", null, panelDados, null);
+		panelDados.setLayout(null);
 
 		JLabel lblRGM = new JLabel("RGM");
 		lblRGM.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblRGM.setBounds(10, 11, 46, 14);
-		panel.add(lblRGM);
+		panelDados.add(lblRGM);
 
-		txtRGM = new JTextField();
+		txtRGM = new JTextField(8);
 		txtRGM.setBounds(54, 8, 128, 25);
-		panel.add(txtRGM);
+		panelDados.add(txtRGM);
 		txtRGM.setColumns(10);
+		
 
 		JLabel lblNewLabel_1 = new JLabel("Nome");
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1.setBounds(217, 11, 46, 14);
-		panel.add(lblNewLabel_1);
+		panelDados.add(lblNewLabel_1);
 
 		txtNome = new JTextField();
 		txtNome.setColumns(10);
 		txtNome.setBounds(270, 8, 236, 25);
-		panel.add(txtNome);
+		panelDados.add(txtNome);
 
 		JLabel lblDataDeNascimento = new JLabel("Data de Nascimento");
 		lblDataDeNascimento.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblDataDeNascimento.setBounds(10, 47, 158, 22);
-		panel.add(lblDataDeNascimento);
+		panelDados.add(lblDataDeNascimento);
 
 		JLabel lblNewLabel_1_1 = new JLabel("CPF");
 		lblNewLabel_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_1.setBounds(330, 47, 30, 22);
-		panel.add(lblNewLabel_1_1);
+		panelDados.add(lblNewLabel_1_1);
 
 		JLabel lblNewLabel_1_2 = new JLabel("Email");
 		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_2.setBounds(10, 83, 46, 14);
-		panel.add(lblNewLabel_1_2);
+		panelDados.add(lblNewLabel_1_2);
 
 		txtEmail = new JTextField();
 		txtEmail.setColumns(10);
 		txtEmail.setBounds(63, 80, 478, 25);
-		panel.add(txtEmail);
+		panelDados.add(txtEmail);
 
 		JLabel lblNewLabel_1_2_1 = new JLabel("CEP");
 		lblNewLabel_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_2_1.setBounds(10, 119, 46, 14);
-		panel.add(lblNewLabel_1_2_1);
+		panelDados.add(lblNewLabel_1_2_1);
 
 		JLabel lblNewLabel_1_2_1_1 = new JLabel("Logradouro");
 		lblNewLabel_1_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_2_1_1.setBounds(223, 115, 90, 22);
-		panel.add(lblNewLabel_1_2_1_1);
+		panelDados.add(lblNewLabel_1_2_1_1);
 
 		txtLogradouro = new JTextField();
 		txtLogradouro.setColumns(10);
 		txtLogradouro.setBounds(323, 116, 218, 25);
-		panel.add(txtLogradouro);
+		panelDados.add(txtLogradouro);
 
 		JLabel lblNewLabel_1_2_1_2 = new JLabel("Munic\u00EDpio");
 		lblNewLabel_1_2_1_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_2_1_2.setBounds(10, 155, 74, 22);
-		panel.add(lblNewLabel_1_2_1_2);
+		panelDados.add(lblNewLabel_1_2_1_2);
 
 		txtMunicipio = new JTextField();
 		txtMunicipio.setColumns(10);
 		txtMunicipio.setBounds(94, 152, 143, 25);
-		panel.add(txtMunicipio);
+		panelDados.add(txtMunicipio);
 
 		JLabel lblNewLabel_1_2_1_2_1 = new JLabel("Estado");
 		lblNewLabel_1_2_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_2_1_2_1.setBounds(269, 152, 53, 22);
-		panel.add(lblNewLabel_1_2_1_2_1);
+		panelDados.add(lblNewLabel_1_2_1_2_1);
 
 		txtEstado = new JTextField();
 		txtEstado.setColumns(10);
 		txtEstado.setBounds(331, 148, 209, 25);
-		panel.add(txtEstado);
+		panelDados.add(txtEstado);
 
 		JLabel lblNewLabel_1_2_1_2_2 = new JLabel("Celular");
 		lblNewLabel_1_2_1_2_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel_1_2_1_2_2.setBounds(10, 191, 74, 22);
-		panel.add(lblNewLabel_1_2_1_2_2);
+		panelDados.add(lblNewLabel_1_2_1_2_2);
 
 		JFormattedTextField fmtCpf = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
 		fmtCpf.setBounds(370, 44, 171, 25);
-		panel.add(fmtCpf);
+		panelDados.add(fmtCpf);
 
 		JFormattedTextField fmtCelular = new JFormattedTextField(new MaskFormatter("(##) #####-####"));
 		fmtCelular.setBounds(76, 188, 143, 25);
-		panel.add(fmtCelular);
+		panelDados.add(fmtCelular);
 
 		JFormattedTextField fmtData = new JFormattedTextField(new MaskFormatter("##/##/####"));
 		fmtData.setBounds(189, 46, 128, 25);
-		panel.add(fmtData);
+		panelDados.add(fmtData);
 
 		txtCep = new JTextField();
 		txtCep.setFocusTraversalKeysEnabled(false);
@@ -252,22 +267,22 @@ public class Tela extends JFrame {
 			}
 		});
 		txtCep.setBounds(63, 116, 143, 25);;
-		panel.add(txtCep);
+		panelDados.add(txtCep);
 		txtCep.setColumns(10);
 
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("Curso", null, panel_1, null);
-		panel_1.setLayout(null);
+		JPanel panelCurso = new JPanel();
+		tabbedPane.addTab("Curso", null, panelCurso, null);
+		panelCurso.setLayout(null);
 
 		JLabel lblCurso = new JLabel("Curso");
 		lblCurso.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblCurso.setBounds(17, 21, 45, 22);
-		panel_1.add(lblCurso);
+		panelCurso.add(lblCurso);
 		
 		JComboBox cbxCampus = new JComboBox();
 		extracted(cbxCampus);
 		cbxCampus.setBounds(90, 68, 439, 31);
-		panel_1.add(cbxCampus);
+		panelCurso.add(cbxCampus);
 
 		JComboBox cbxCurso = new JComboBox();
 		cbxCurso.addActionListener(new ActionListener() {
@@ -283,36 +298,36 @@ public class Tela extends JFrame {
 		});
 		extracted(cbxCurso);
 		cbxCurso.setBounds(70, 14, 439, 31);
-		panel_1.add(cbxCurso);
+		panelCurso.add(cbxCurso);
 
 		JLabel lblC = new JLabel("Campus");
 		lblC.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblC.setBounds(17, 69, 63, 22);
-		panel_1.add(lblC);
+		panelCurso.add(lblC);
 
 
 		JLabel lblPeriodo = new JLabel("Periodo");
 		lblPeriodo.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblPeriodo.setBounds(17, 117, 63, 22);
-		panel_1.add(lblPeriodo);
+		panelCurso.add(lblPeriodo);
 
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Matutino");
 		buttonGroup.add(rdbtnNewRadioButton);
 		rdbtnNewRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		rdbtnNewRadioButton.setBounds(119, 117, 109, 23);
-		panel_1.add(rdbtnNewRadioButton);
+		panelCurso.add(rdbtnNewRadioButton);
 
 		JRadioButton rdbtnVespertino = new JRadioButton("Vespertino");
 		buttonGroup.add(rdbtnVespertino);
 		rdbtnVespertino.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		rdbtnVespertino.setBounds(230, 118, 109, 23);
-		panel_1.add(rdbtnVespertino);
+		panelCurso.add(rdbtnVespertino);
 
 		JRadioButton rdbtnNoturno = new JRadioButton("Noturno");
 		buttonGroup.add(rdbtnNoturno);
 		rdbtnNoturno.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		rdbtnNoturno.setBounds(349, 118, 109, 23);
-		panel_1.add(rdbtnNoturno);
+		panelCurso.add(rdbtnNoturno);
 
 		JButton btnSalvar = new JButton("");
 		btnSalvar.addActionListener(new ActionListener() {
@@ -339,23 +354,22 @@ public class Tela extends JFrame {
 					curso.setCampus(campuscbx);
 					curso.setCurso(curso.getCurso());
 					
-					
 					if (rdbtnNewRadioButton.isSelected()) {
-						curso.setPeriodo(rdbtnNewRadioButton.getText());
+						aluno.setPeriodo(rdbtnNewRadioButton.getText());
 					} else if (rdbtnNoturno.isSelected()) {
-						curso.setPeriodo(rdbtnNoturno.getText());
+						aluno.setPeriodo(rdbtnNoturno.getText());
 					}else {
-						curso.setPeriodo(rdbtnVespertino.getText());
+						aluno.setPeriodo(rdbtnVespertino.getText());
 					}
-					
 					
 					aluno.setCurso(curso);
 					
 					alunoDao = new AlunoDao();
 					alunoDao.salvar(aluno);
+					JOptionPane.showMessageDialog(null, "CADASTRADO COM SUCESSO!!!");
 					
 				} catch (Exception e2) {
-					e2.printStackTrace();
+					JOptionPane.showMessageDialog(null, "ERRO AO CADASTRAR UM ALUNO :: RGM JÁ CADASTRADO OU CAMPO EM BRANCO");
 				}
 
 
@@ -363,33 +377,280 @@ public class Tela extends JFrame {
 		});
 		btnSalvar.setIcon(new ImageIcon(".\\Images\\icons8-crie-um-novo-64.png"));
 		btnSalvar.setBounds(47, 150, 82, 76);
-		panel_1.add(btnSalvar);
+		panelCurso.add(btnSalvar);
 
 		JButton btnSair = new JButton("");
 		btnSair.setIcon(new ImageIcon(".\\Images\\icons8-desligar-48.png"));
 		btnSair.setBounds(439, 150, 122, 76);
-		panel_1.add(btnSair);
+		panelCurso.add(btnSair);
 
 		JButton btnLeitura = new JButton("");
 		btnLeitura.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					alunoDao = new AlunoDao();
+					AlunoModel aluno = alunoDao.getByRgm(Integer.parseInt(txtRGM.getText()));
+					txtNome.setText(aluno.getNome());
+					fmtData.setText(aluno.getDataNascimento());
+					fmtCpf.setText(aluno.getCpf());
+					txtEmail.setText(aluno.getEmail());
+					txtCep.setText(aluno.getCep());
+					txtLogradouro.setText(aluno.getLogradouro());
+					txtMunicipio.setText(aluno.getMunicipio());
+					txtEstado.setText(aluno.getEstado());
+					fmtCelular.setText(aluno.getCelular());
+					
+					CursoModel curso = new CursoModel();
+					curso.setIdCurso(aluno.getCurso().getIdCurso());
+					curso.setCurso(aluno.getCurso().getCurso());
+					
+					CampusModel campus = new CampusModel();
+					campus.setIdCampus(aluno.getCurso().getCampus().getIdCampus());
+					campus.setNomeCampus(aluno.getCurso().getCampus().getNomeCampus());
+					curso.setCampus(campus);
+
+					cbxCurso.setSelectedIndex(aluno.getCurso().getIdCurso());
+					cbxCampus.setSelectedIndex(1);
+					
+					if (aluno.getPeriodo().equals(rdbtnNoturno.getText())) {
+						rdbtnNoturno.setSelected(isActive());
+					} 
+					
+					if (aluno.getPeriodo().equals(rdbtnNewRadioButton.getText())) {
+						rdbtnNewRadioButton.setSelected(isActive());
+					}
+					
+					if (aluno.getPeriodo().equals(rdbtnVespertino.getText())) {
+						rdbtnVespertino.setSelected(isActive());
+					}
+					
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "Erro ao listar :: Aluno não existe");
+				}
 			}
 		});
 		btnLeitura.setIcon(new ImageIcon(".\\Images\\icons8-leitura-48.png"));
 		btnLeitura.setBounds(139, 150, 82, 76);
-		panel_1.add(btnLeitura);
+		panelCurso.add(btnLeitura);
 
 		JButton btnAtualizar = new JButton("");
+		btnAtualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AlunoModel aluno;
+				try {
+					aluno = new AlunoModel();
+					aluno.setRgm(Integer.parseInt(txtRGM.getText()));
+					aluno.setNome(txtNome.getText());
+					aluno.setDataNascimento(fmtData.getText());
+					aluno.setCpf(fmtCpf.getText());
+					aluno.setEmail(txtEmail.getText());
+					aluno.setCep(txtCep.getText());
+					aluno.setLogradouro(txtLogradouro.getText());
+					aluno.setMunicipio(txtMunicipio.getText());
+					aluno.setEstado(txtEstado.getText());
+					aluno.setCelular(fmtCelular.getText());
+					
+					CursoModel curso = (CursoModel) cbxCurso.getSelectedItem();
+					curso.setIdCurso(curso.getIdCurso());
+					
+					CampusModel campuscbx = (CampusModel) cbxCampus.getSelectedItem();
+					curso.setCampus(campuscbx);
+					curso.setCurso(curso.getCurso());
+					
+					if (rdbtnNewRadioButton.isSelected()) {
+						aluno.setPeriodo(rdbtnNewRadioButton.getText());
+					} else if (rdbtnNoturno.isSelected()) {
+						aluno.setPeriodo(rdbtnNoturno.getText());
+					}else {
+						aluno.setPeriodo(rdbtnVespertino.getText());
+					}
+					
+					aluno.setCurso(curso);
+					
+					alunoDao = new AlunoDao();
+					alunoDao.update(aluno);
+					JOptionPane.showMessageDialog(null, "Atualizado COM SUCESSO!!!");
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "Erro ao atualizar dados do aluno");
+				}
+			}
+		});
 		btnAtualizar.setIcon(new ImageIcon(".\\Images\\icons8-update-60.png"));
 		btnAtualizar.setBounds(234, 150, 82, 76);
-		panel_1.add(btnAtualizar);
+		panelCurso.add(btnAtualizar);
 
 		JButton btnExcluir = new JButton("");
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					Integer rgm = Integer.parseInt(txtRGM.getText());
+					alunoDao = new AlunoDao();
+					AlunoModel aluno = alunoDao.getByRgm(rgm);
+					boletimDao = new BoletimDao();
+					boletimDao.delete(aluno.getIdAluno());
+					alunoDao.delete(rgm);
+					JOptionPane.showMessageDialog(null, "Deletado com sucesso!");
+				}
+				catch (Exception e3) {
+					JOptionPane.showMessageDialog(null, "ERRO AO DELETAR UM ALUNO");
+				}
+			}
+		});
 		btnExcluir.setIcon(new ImageIcon(".\\Images\\icons8-remover-48.png"));
 		btnExcluir.setBounds(326, 150, 82, 76);
-		panel_1.add(btnExcluir);
+		panelCurso.add(btnExcluir);
 		
-		CursoDao dao = new CursoDao();
+		JPanel panelNotas = new JPanel();
+		tabbedPane.addTab("Notas e faltas", null, panelNotas, null);
+		panelNotas.setLayout(null);
+		
+		JLabel lblRGM_1 = new JLabel("RGM");
+		lblRGM_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblRGM_1.setBounds(10, 15, 37, 22);
+		panelNotas.add(lblRGM_1);
+		
+		JComboBox cbxDisciplina = new JComboBox();
+		cbxDisciplina.setModel(new DefaultComboBoxModel(new String[] {"Selecione uma disciplina"}));
+		cbxDisciplina.setBounds(93, 83, 457, 31);
+		panelNotas.add(cbxDisciplina);
+			
+		
+		txtRgmNotas = new JTextField(10);
+		txtRgmNotas.addCaretListener(new CaretListener() {
+			public void caretUpdate(CaretEvent e) {
+				
+				if (txtRgmNotas.getText().toString().length() == 8 || txtRgmNotas.getText().toString().length() == 10) {
+					AlunoModel aluno;
+					cbxDisciplina.removeAllItems();
+					extractedEmpty(cbxDisciplina);
+					try {
+						alunoDao = new AlunoDao();
+						aluno = alunoDao.getByRgm(Integer.parseInt(txtRgmNotas.getText()));
+						txtNomeNotas.setText(aluno.getNome());
+						txtCursoNotas.setText(aluno.getCurso().getCurso());
+						
+						cursoxMateriaDao.listarCursoeMaterias(txtCursoNotas.getText()).stream().forEach((mc) -> {
+								cbxDisciplina.addItem(mc);
+						});
+						
+					} catch (Exception e4) {
+						e4.printStackTrace();
+					}
+					
+				}
+			}
+		});
+		txtRgmNotas.setBounds(52, 13, 205, 25);
+		panelNotas.add(txtRgmNotas);
+		
+
+		
+		txtNomeNotas = new JTextField(10);
+		txtNomeNotas.setEditable(false);
+		txtNomeNotas.setBounds(303, 13, 247, 25);
+		panelNotas.add(txtNomeNotas);
+		
+		txtCursoNotas = new JTextField(10);
+		txtCursoNotas.setEditable(false);
+		txtCursoNotas.setBounds(10, 47, 540, 25);
+		panelNotas.add(txtCursoNotas);
+		
+		JLabel lblDisciplina = new JLabel("Disciplina");
+		lblDisciplina.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblDisciplina.setBounds(10, 84, 73, 22);
+		panelNotas.add(lblDisciplina);
+		
+		JLabel Semestre = new JLabel("Semestre");
+		Semestre.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		Semestre.setBounds(10, 130, 73, 22);
+		panelNotas.add(Semestre);
+		
+		JComboBox cbxSemestre = new JComboBox();
+		cbxSemestre.setModel(new DefaultComboBoxModel(new String[] {"Selecione um semestre"}));
+		cbxSemestre.setBounds(93, 125, 164, 31);
+		panelNotas.add(cbxSemestre);
+		
+		JLabel Notas = new JLabel("Notas");
+		Notas.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		Notas.setBounds(283, 128, 45, 22);
+		panelNotas.add(Notas);
+		
+		JComboBox cbxNotas = new JComboBox();
+		cbxNotas.setModel(new DefaultComboBoxModel(new String[] {"0", "0.25", "0.50", "0.75", "1", "1.25", "1.50", "1.75", "2", "2.25", "2.50", "2.75", "3", "3.25", "3.50", "3.75", "4", "4.25", "4.50", "4.75", "5", "5.25", "5.50", "5.75", "6", "6.25", "6.50", "6.75", "7", "7.25", "7.50", "7.75", "8", "8.25", "8.50", "8.75", "9", "9.25", "9.50", "9.75", "10"}));
+		cbxNotas.setBounds(338, 125, 59, 31);
+		panelNotas.add(cbxNotas);
+		
+		JLabel lblFaltas = new JLabel("Faltas");
+		lblFaltas.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblFaltas.setBounds(409, 130, 45, 22);
+		panelNotas.add(lblFaltas);
+		
+		txtFaltas = new JTextField();
+		txtFaltas.setBounds(464, 126, 86, 31);
+		panelNotas.add(txtFaltas);
+		txtFaltas.setColumns(10);
+		
+		JButton btnSalvar_1 = new JButton("");
+		btnSalvar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				BoletimModel model;
+				try {
+					model = new BoletimModel();
+					model.setNotas(Double.parseDouble((String) cbxNotas.getSelectedItem()));
+					model.setFaltas(Integer.parseInt(txtFaltas.getText()));
+					
+					alunoDao = new AlunoDao();
+					AlunoModel aluno = alunoDao.getByRgm(Integer.parseInt(txtRgmNotas.getText()));
+					model.setAluno(aluno);
+					
+					CursoXMateriaModel materia = (CursoXMateriaModel) cbxDisciplina.getSelectedItem();
+					model.setCursoxmateria(materia);
+					
+					try {
+						boletimDao = new BoletimDao();
+						boletimDao.salvar(model);
+						JOptionPane.showMessageDialog(null, "Nota cadastrada com sucesso!");
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "Erro ao cadastra uma nota");
+					}
+					
+					
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+				
+			}
+		});
+		btnSalvar_1.setIcon(new ImageIcon(".\\Images\\icons8-crie-um-novo-64.png"));
+		btnSalvar_1.setBounds(36, 174, 82, 52);
+		panelNotas.add(btnSalvar_1);
+		
+		JButton btnAtualizar_1 = new JButton("");
+		btnAtualizar_1.setIcon(new ImageIcon(".\\Images\\icons8-update-60.png"));
+		btnAtualizar_1.setBounds(223, 174, 82, 52);
+		panelNotas.add(btnAtualizar_1);
+		
+		JButton btnLeitura_1 = new JButton("");
+		btnLeitura_1.setIcon(new ImageIcon(".\\Images\\icons8-leitura-48.png"));
+		btnLeitura_1.setBounds(128, 174, 82, 52);
+		panelNotas.add(btnLeitura_1);
+		
+		JButton btnExcluir_1 = new JButton("");
+		btnExcluir_1.setIcon(new ImageIcon(".\\Images\\icons8-remover-48.png"));
+		btnExcluir_1.setBounds(315, 174, 82, 52);
+		panelNotas.add(btnExcluir_1);
+		
+		JButton btnSair_1 = new JButton("");
+		btnSair_1.setIcon(new ImageIcon(".\\Images\\icons8-desligar-48.png"));
+		btnSair_1.setBounds(428, 174, 122, 52);
+		panelNotas.add(btnSair_1);
+		
+		JPanel panelBoletim = 		new JPanel();
+		tabbedPane.addTab("Boletim", null, panelBoletim, null);
+		
+		
 		
 		dao.listarCurso().stream().forEach((c) -> {
 			cbxCurso.addItem(c);
@@ -398,5 +659,9 @@ public class Tela extends JFrame {
 
 	private void extracted(JComboBox cbxCurso) {
 		cbxCurso.setModel(new DefaultComboBoxModel(new String[] {"Selecione uma op\u00E7\u00E3o"}));
+	}
+	
+	private void extractedEmpty(JComboBox cbxDisciplina) {
+		cbxDisciplina.setModel(new DefaultComboBoxModel(new String[] {"Selecione uma disciplina"}));
 	}
 }
